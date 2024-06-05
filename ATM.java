@@ -1,47 +1,67 @@
-/* write a program in JAVA to create ATM to check the balance, deposit and withdraw money */
+/*
+write a program in JAVA to create ATM to check the balance, deposit and withdraw money by
+creating checkbalance(), withdraw() and deposit() methods
+*/
 
 import java.util.Scanner;
 
-public class ATM {
+class ATM {
+    private int balance;
+    public ATM(int initialbalance){
+        balance = initialbalance;
+    }
+    public void checkBalance() {
+        System.out.println("your balance is: " + balance);
+    }
+    public void withdraw(){
+        Scanner sc = new Scanner(System.in);
+        System.out.print("Enter your withdraw amount: ");
+        int withdrawAmount = sc.nextInt();
+        if (withdrawAmount <= balance) {
+            balance = balance - withdrawAmount;
+            System.out.println(withdrawAmount + " is debited from your bank account.");
+            System.out.println("Now your current balance is: " + balance);
+        }else {
+            System.out.println("Your amount is high.");
+        }
+    }
+    public void  deposit() {
+        Scanner sc = new Scanner(System.in);
+        System.out.print("Enter your deposit amount: ");
+        int depositAmount = sc.nextInt();
+        balance = balance + depositAmount;
+        System.out.println(depositAmount + " is credited to your bank account.");
+        System.out.println("Now your current balance is: " + balance);
+    }
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
+        System.out.print("Enter your initial balance: ");
+        int initialbalance = sc.nextInt();
         int password = 1234;
         System.out.print("Enter your ATM pin: ");
         int pin = sc.nextInt();
-        int balance = 5000;
-        boolean breakLoop = false;
-        while(! breakLoop){
-            if (pin == password) {
+        ATM atm = new ATM(initialbalance);
+        while(true){
+            if (pin == password){
                 System.out.print("1 == balance\n2 == withdraw balance\n3 == deposit balance\n4 == exit\n\n");
-                try {
-                    System.out.print("Please enter your choice: ");
-                    int option = sc.nextInt();
+                System.out.println("Enter your option: ");
+                int option = sc.nextInt();
+                try{
                     if (option == 1) {
-                        System.out.println("your balance is: " + balance);
-                        break;
+                        atm.checkBalance();
                     }
                     if (option == 2) {
-                        System.out.print("Enter your withdraw amount: ");
-                        int withdrawAmount = sc.nextInt();
-                        balance = balance - withdrawAmount;
-                        System.out.println(withdrawAmount + " is debited from your bank account.");
-                        System.out.println("Now your current balance is: " + balance);
-                        break;
+                        atm.withdraw();
                     }
                     if (option == 3) {
-                        System.out.print("Enter your deposit amount: ");
-                        int depositAmount = sc.nextInt();
-                        balance = balance + depositAmount;
-                        System.out.println(depositAmount + "is credited to your bank account.");
-                        System.out.println("Now your current balance is: " + balance);
-                        break;
+                        atm.deposit();
                     }
                     if (option == 4) {
-                        breakLoop = true;
+                        System.out.print("Thank you for coming.");
+                        break;
                     }
-                }
-                catch (Exception e) {
-                        System.out.print("Please enter your valid option.");
+                } catch (Exception e) {
+                    throw new RuntimeException(e);
                 }
             }
             else {
